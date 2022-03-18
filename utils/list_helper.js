@@ -24,8 +24,31 @@ const favoriteBlog = (blogs) => {
   })
   return favorite[0]
 }
+
+const mostBlogs = (blogs) => {
+  let authors = []
+  let vlog = []
+
+  blogs.map((b) => {
+    if (!authors.some((a) => a == b.author)) {
+      authors.push(b.author)
+      vlog.push(1)
+    } else {
+      let index = authors.indexOf(b.author)
+      vlog[index]++
+    }
+  })
+
+  let ind = vlog.indexOf(Math.max(...vlog))
+  return {
+    author: authors[ind],
+    blogs: vlog[ind],
+  }
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
+  mostBlogs,
 }
