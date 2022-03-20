@@ -56,3 +56,15 @@ test('default likes', async () => {
   console.log(blogs[blogs.length - 1])
   expect(blogs[blogs.length - 1].likes).toBe(0)
 })
+
+test('no title, no url', async () => {
+  const newBlog = {
+    author: 'Me',
+  }
+
+  await api.post('/api/blogs').send(newBlog).expect(400)
+})
+
+afterAll(() => {
+  mongoose.connection.close()
+})
