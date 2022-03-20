@@ -43,3 +43,16 @@ test('POST is working', async () => {
   const blogs = await helper.getBlogsDb()
   expect(blogs).toHaveLength(helper.listBlogs.length + 1)
 })
+
+test('default likes', async () => {
+  const newBlog = {
+    title: 'Test',
+    author: 'Me',
+    url: 'none',
+  }
+
+  await api.post('/api/blogs').send(newBlog).expect(201)
+  const blogs = await helper.getBlogsDb()
+  console.log(blogs[blogs.length - 1])
+  expect(blogs[blogs.length - 1].likes).toBe(0)
+})
