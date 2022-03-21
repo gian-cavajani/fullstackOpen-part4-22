@@ -75,6 +75,18 @@ test('deleting a resource', async () => {
   expect(blogsAfter).toHaveLength(helper.listBlogs.length - 1)
 })
 
+test('updating a resource', async () => {
+  const blogs = await helper.getBlogsDb()
+  const blogId = blogs[0]
+  const newBlog = {
+    likes: 90,
+  }
+  await api.put(`/api/blogs/${blogId.id}`).send(newBlog).expect(200)
+  const endBlogs = await helper.getBlogsDb()
+
+  expect(endBlogs[0].likes).toBe(90)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
