@@ -65,6 +65,16 @@ test('no title, no url', async () => {
   await api.post('/api/blogs').send(newBlog).expect(400)
 })
 
+test('deleting a resource', async () => {
+  const blogs = await helper.getBlogsDb()
+  const deleteBlog = blogs[0]
+
+  await api.delete(`/api/blogs/${deleteBlog.id}`).expect(204)
+  const blogsAfter = await helper.getBlogsDb()
+
+  expect(blogsAfter).toHaveLength(helper.listBlogs.length - 1)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
