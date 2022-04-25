@@ -10,8 +10,8 @@ usersRouter.post('/api/users', async (req,res)=>{
     if(existingUser){
         return res.status(400).json({error: 'username must be unique'})
     }
-    if(username.length <= 3 || password.length <= 3){
-        return res.status(400).json({error: 'password and username must be longer than 3 characters'})
+    if(password.length <= 3){
+        return res.status(400).json({error: 'password must be longer than 3 characters'})
     }
 
     const passwordHash = await bcrypt.hash(password,10)
@@ -24,7 +24,7 @@ usersRouter.post('/api/users', async (req,res)=>{
 })
 
 usersRouter.get('/api/users',async (req,res)=>{
-    const users = await User.find({})
+    const users = await User.find({}).populate('blogs',{title:1, url:1,author:1})
     res.json(users)
 })
 
