@@ -1,3 +1,6 @@
+const jwt = require('jsonwebtoken')
+const User = require('../models/user')
+
 const errorHandler = (error, req, response, next) => {
   console.log({error})
   if (error.name === 'ValidationError') {
@@ -19,5 +22,14 @@ const tokenExtractor = (request,response,next) => {
   next()
 }
 
+const userExtractor = async(request,response,next) => {
+  const token = request.token
+  const decodedtoken = jwt.verify(token, process.env.SECRET)
+  if(!decodedtoken){
+    return res.status(401).json({error: 'missing token'})
+  }
+  request.user = await User.findById(decodedtoken.id)
+  next()
+}
 
-module.exports = { errorHandler, tokenExtractor }
+module.exports = { errorHandler, tokenExtractor, userExtractor }
