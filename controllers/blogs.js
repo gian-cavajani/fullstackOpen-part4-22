@@ -28,12 +28,12 @@ blogsRouter.delete('/api/blogs/:id', userExtractor, async (req, res) => {
   const user = req.user
   const blog = await Blog.findById(req.params.id)
   if(blog.user.toString() === user.id.toString()){
-    blog.remove()
+    await Blog.findByIdAndDelete(req.params.id)
+    res.status(204).end()
   } else {
     return res.status(401).json({error: "you can't delete a blog that isn't yours"})
   }
 
-  res.status(204).end()
 })
 
 blogsRouter.put('/api/blogs/:id', async (req, res) => {
