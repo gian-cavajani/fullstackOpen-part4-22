@@ -14,12 +14,14 @@ const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
 
 mongoose
-  .connect(MONGODB_URI)
-  .then(() => info('connected to mongo'))
-  .catch((err) => error('error', err.message))
+.connect(MONGODB_URI)
+.then(() => info('connected to mongo'))
+.catch((err) => error('error', err.message))
 
 app.use(cors())
 app.use(express.json())
+
+app.use(middleware.tokenExtractor)
 
 app.use('/', blogsRouter)
 app.use('/', usersRouter)
